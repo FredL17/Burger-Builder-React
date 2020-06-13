@@ -3,17 +3,16 @@ import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 import classes from "./Burger.module.css";
 
 const burger = props => {
-  let transformedIngredients = Object.keys(props.ingredient).map(igKey => {
-    return [...Array(props.ingredient[igKey])]
-      .map((_, i) => {
-        return (
-          <BurgerIngredient key={igKey + i} type={igKey}></BurgerIngredient>
-        );
-      })
-      .reduce((arr, el) => {
-        return arr.concat(el);
-      }, []);
-  });
+  let transformedIngredients = [];
+
+  for (let ingredient of Object.keys(props.ingredients)) {
+    const count = props.ingredients[ingredient];
+    for (let i = 0; i < count; i++) {
+      transformedIngredients.push(
+        <BurgerIngredient key={ingredient + i} type={ingredient} />
+      );
+    }
+  }
 
   if (transformedIngredients.length === 0) {
     transformedIngredients = <p>Please start adding ingredients.</p>;

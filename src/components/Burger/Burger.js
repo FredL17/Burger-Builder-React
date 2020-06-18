@@ -2,7 +2,7 @@ import React from "react";
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 import classes from "./Burger.module.css";
 
-const burger = props => {
+function Burger(props) {
   let transformedIngredients = [];
 
   for (let ingredient of Object.keys(props.ingredients)) {
@@ -25,6 +25,6 @@ const burger = props => {
       <BurgerIngredient type="bread-bottom"></BurgerIngredient>
     </div>
   );
-};
+}
 
-export default burger;
+export default Burger;

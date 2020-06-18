@@ -1,11 +1,12 @@
-import React from "react";
-import Wrapper from "../../hoc/Wrapper";
+import React, { Fragment } from "react";
 
-const layout = props => (
-  <Wrapper>
-    <div>Toolbar, SiderDrawer, Backdrop</div>
-    <main>{props.children}</main>
-  </Wrapper>
-);
+function Layout(props) {
+  return (
+    <Fragment>
+      <div>Toolbar, SiderDrawer, Backdrop</div>
+      <main>{props.children}</main>
+    </Fragment>
+  );
+}
 
-export default layout;
+export default Layout;

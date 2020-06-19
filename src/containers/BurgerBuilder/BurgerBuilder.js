@@ -57,6 +57,16 @@ class BurgerBuilder extends Component {
     });
   };
 
+  cancelOrderHandler = () => {
+    this.setState({
+      showModal: false
+    });
+  };
+
+  continueOrderHandler = () => {
+    console.log("continue");
+  };
+
   // Increase the selected ingredient by 1 and update the price accordingly.
   addIngredientHandler = type => {
     const oldCount = this.state.ingredients[type];
@@ -112,7 +122,12 @@ class BurgerBuilder extends Component {
     return (
       <Fragment>
         <Modal show={this.state.showModal} modalClosed={this.closeModalHandler}>
-          <OrderSummary ingredients={this.state.ingredients}></OrderSummary>
+          <OrderSummary
+            cancelOrder={this.cancelOrderHandler}
+            continueOrder={this.continueOrderHandler}
+            ingredients={this.state.ingredients}
+            price={this.state.totalPrice}
+          ></OrderSummary>
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls

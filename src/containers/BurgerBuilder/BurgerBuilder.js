@@ -3,6 +3,9 @@ import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import errorHandler from "../../hoc/errorHandler/errorHandler";
+import axios from "../../axios-orders";
 
 // Prices for each ingredient.
 const INGREDIENT_PRICES = {
@@ -25,7 +28,8 @@ class BurgerBuilder extends Component {
       },
       totalPrice: 0,
       orderState: false,
-      showModal: false
+      showModal: false,
+      isLoading: false
     };
   }
 
@@ -64,7 +68,33 @@ class BurgerBuilder extends Component {
   };
 
   continueOrderHandler = () => {
-    console.log("continue");
+    this.setState(
+      {
+        isLoading: true
+      },
+      () => {
+        const order = {
+          ingredients: this.state.ingredients,
+          price: this.state.totalPrice,
+          customer: "Feifan Lin"
+        };
+        axios
+          .post("/orders.json", order)
+          .then(res => {
+            this.setState({
+              isLoading: false,
+              showModal: false
+            });
+            return res;
+          })
+          .catch(err => {
+            this.setState({
+              isLoading: false,
+              showModal: false
+            });
+          });
+      }
+    );
   };
 
   // Increase the selected ingredient by 1 and update the price accordingly.
@@ -119,15 +149,22 @@ class BurgerBuilder extends Component {
       disabledBtnInfo[key] = disabledBtnInfo[key] <= 0;
     }
 
+    let orderSummary = (
+      <OrderSummary
+        cancelOrder={this.cancelOrderHandler}
+        continueOrder={this.continueOrderHandler}
+        ingredients={this.state.ingredients}
+        price={this.state.totalPrice}
+      ></OrderSummary>
+    );
+    if (this.state.isLoading) {
+      orderSummary = <Spinner />;
+    }
+
     return (
       <Fragment>
         <Modal show={this.state.showModal} modalClosed={this.closeModalHandler}>
-          <OrderSummary
-            cancelOrder={this.cancelOrderHandler}
-            continueOrder={this.continueOrderHandler}
-            ingredients={this.state.ingredients}
-            price={this.state.totalPrice}
-          ></OrderSummary>
+          {orderSummary}
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
@@ -143,4 +180,4 @@ class BurgerBuilder extends Component {
   }
 }
 
-export default BurgerBuilder;
+export default errorHandler(BurgerBuilder, axios);

@@ -9,6 +9,7 @@ class App extends Component {
   render() {
     return (
       <Layout>
+        {/* Ensure only one route gets loaded at a time. */}
         <Switch>
           <Route path="/checkout" component={Checkout} />
           <Route path="/orders" exact component={Orders} />

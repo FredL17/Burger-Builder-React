@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-
 import { Route } from "react-router-dom";
+// Components.
 import CheckoutSummary from "../../components/Order/Checkout/CheckoutSummary/CheckoutSummary";
 import ContactData from "./ContactData/ContactData";
+
 class Checkout extends Component {
   constructor(props) {
     super(props);

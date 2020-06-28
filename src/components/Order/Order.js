@@ -18,6 +18,7 @@ function Order(props) {
       </span>
     );
   });
+
   return (
     <div className={classes.Order}>
       <p>{ingredientOutput}</p>

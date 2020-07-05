@@ -22,12 +22,12 @@ export const purchaseBurgerStart = () => {
   };
 };
 
-export const purchaseBurger = orderData => {
+export const purchaseBurger = (orderData, token) => {
   return dispatch => {
     dispatch(purchaseBurgerStart());
     // Send post request to firebase.
     axios
-      .post("/orders.json", orderData)
+      .post("/orders.json?auth=" + token, orderData)
       .then(res => {
         dispatch(purchaseBurgerSuccess(res.data.name, orderData));
       })
@@ -63,12 +63,14 @@ export const fetchOrdersStart = error => {
   };
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = (token, userId) => {
   return dispatch => {
     dispatch(fetchOrdersStart());
     // Fetch the orders from the firebase.
+    const queryParams =
+      "?auth=" + token + `&orderBy="userId"&equalTo="${userId}" `;
     axios
-      .get("/orders.json")
+      .get("/orders.json" + queryParams)
       .then(res => {
         const fetchedOrders = [];
         for (let key in res.data) {

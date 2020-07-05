@@ -4,7 +4,8 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   ingredients: null,
   totalPrice: 0,
-  error: false
+  error: false,
+  isBuilding: false
 };
 
 // Prices for each ingredient.
@@ -17,29 +18,36 @@ const INGREDIENT_PRICES = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    // Add ingredient.
     case actionTypes.ADD_INGREDIENT:
       return {
         totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
         ingredients: {
           ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] + 1
+          [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
+          isBuilding: true
         }
       };
+    // Remove ingredient.
     case actionTypes.REMOVE_INGREDIENT:
       return {
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
         ingredients: {
           ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] - 1
+          [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
+          isBuilding: true
         }
       };
+    // Reset ingredient.
     case actionTypes.SET_INGREDIENTS:
       return {
         ...state,
         ingredients: action.ingredients,
         totalPrice: 0,
-        error: false
+        error: false,
+        isBuilding: false
       };
+    // Handle case when fetching ingredients from firebase is failed.
     case actionTypes.FETCH_INGREDIENTS_FAILED:
       return {
         ...state,
